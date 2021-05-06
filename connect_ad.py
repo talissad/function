@@ -23,7 +23,7 @@ def call_endpoint(access_token, path):
 
 def execute(path):
     access_token = get_access_token()
-    response = call_endpoint(access_token, path)  # '/groups/94db45eb-d04d-4a3f-9ab5-7a52cb606671/members'
+    response = call_endpoint(access_token, path)
     for item in response['value']:
         if "displayName" in item and "id" in item:
             print(f"{item['id']} - {item['displayName']}")
