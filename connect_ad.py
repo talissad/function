@@ -19,6 +19,9 @@ def call_endpoint(access_token, path):
     response = requests.get(endpoint, headers=http_headers)
     if response.status_code == 200:
         return response.json()
+    print(path)
+    print(response.status_code)
+    print(response.content)
     raise Exception(response.content)
 
 def execute(path):
@@ -28,3 +31,21 @@ def execute(path):
         if "displayName" in item and "id" in item:
             print(f"{item['id']} - {item['displayName']}")
     return response
+
+def get_all_users():
+    users = []
+    path = "/users"
+    while path:
+        print("Executando " + path)
+        response = execute(path)
+        if "value" in response:
+            users += response["value"]
+            #if "?" in path:  # TODO remover
+            #    break
+            if "@odata.nextLink" in response:
+                path = "/users?" + response["@odata.nextLink"].split("?", 1)[1]
+            else:
+                path = None
+        else:
+            path = None
+    return users
