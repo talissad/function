@@ -3,18 +3,15 @@ import json
 import azure.functions as func
 
 import connect_ad
-from serviceBus_test import execute_service_bus
+import serviceBus_test
 
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
 
-    path = req.params.get('path')
-    if not path:
-        return func.HttpResponse("Informe a url que quer executar", status_code=200)
+    users = connect_ad.get_all_users()
     try:
-        execute_service_bus()
-        response = connect_ad.execute(path)
-        return func.HttpResponse(json.dumps(response, indent=4, sort_keys=True), status_code=200)
+        serviceBus_test.send_users(users)
+        return func.HttpResponse(json.dumps(users, indent=4, sort_keys=True), status_code=200)
     except Exception as e:
         return func.HttpResponse(str(e), status_code=400)
