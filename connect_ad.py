@@ -32,6 +32,7 @@ def execute(path):
             print(f"{item['id']} - {item['displayName']}")
     return response
 
+
 def get_all_users():
     users = []
     path = "/users"
@@ -40,8 +41,8 @@ def get_all_users():
         response = execute(path)
         if "value" in response:
             users += response["value"]
-            #if "?" in path:  # TODO remover
-            #    break
+            if "?" in path:  # TODO remover
+                break
             if "@odata.nextLink" in response:
                 path = "/users?" + response["@odata.nextLink"].split("?", 1)[1]
             else:
