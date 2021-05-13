@@ -24,9 +24,9 @@ def call_endpoint(access_token, path):
 def execute(path):
     access_token = get_access_token()
     response = call_endpoint(access_token, path)
-    #for item in response['value']:
-    #    if "displayName" in item and "id" in item:
-    #        print(f"{item['id']} - {item['displayName']}")
+    for item in response['value']:
+        if "displayName" in item and "id" in item:
+            print(f"{item['id']} - {item['displayName']}")
     return response
 
 
@@ -34,7 +34,6 @@ def get_all_users():
     users = []
     path = "/users"
     while path:
-        print("Executando " + path)
         response = execute(path)
         if "value" in response:
             users += response["value"]
